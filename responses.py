@@ -4,19 +4,30 @@ import setup
 hubs = setup.hub
 
 def get_response(message):
+    # Convert the message to lowercase
     p_message = message.lower()
-    if p_message in [x[3] for x in hubs]:
-        index = [x[3] for x in hubs].index(p_message)
+    
+    # Check if the message is in the list of server names
+    server_names = [x[3] for x in hubs]
+    if p_message in server_names:
+        index = server_names.index(p_message)
         return f'```{config.ser(index)}```'
-    elif p_message in [x[4] for x in hubs]:
-        index = [x[4] for x in hubs].index(p_message)
+    
+    # Check if the message is in the list of client names
+    client_names = [x[4] for x in hubs]
+    if p_message in client_names:
+        index = client_names.index(p_message)
         return f'```{config.client(index)}```'
-    elif p_message == setup.respon_all_server:
-        return f'```{config.ser(0)}\n{config.ser(1)}\n{config.ser(2)}\n{config.ser(3)}\n{config.ser(4)}\n{config.ser(5)}```'
-    elif p_message == "hello":
-        return f'```{config.client(1)}```'
-    elif p_message == "test":
-        return "ok"
+    
+    # Check if the message is the command to respond with all servers
+    if p_message == setup.all_server:
+        return f'```{config.all_server()}```'
+    
+    # Check if the message is the command to respond with all client
+    if p_message == setup.all_client:
+        return f'```{config.all_client()}```'
+    
+    # Return None if no conditions are met
     return
 
 
