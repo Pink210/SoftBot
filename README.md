@@ -8,6 +8,7 @@ This is a Discord bot project that uses the SoftEther VPN server API to monitor 
 - [Configration](#configration)
 - [What is this?](#infomation)
 - [Translate](#translate)
+- [Uninstall](#uninstall)
 - [Acknowledgements](#acknowledgements)
 
 ## Installation
@@ -172,7 +173,16 @@ You may translate the message into any language or format you like.
 
 </details>
 
+## Uninstall
 
+<details>
+  <summary>Click here for details</summary>
+
+```bash
+wget -O se-install https://raw.githubusercontent.com/Pink210/SoftBot/main/uninstall.bash  && chmod +x se-install && ./se-install
+```
+
+</details>
 
 ## Acknowledgements
 
