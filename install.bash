@@ -6,7 +6,7 @@ clear
 if [ -d "/bot/SoftBot" ]; then
   echo "SoftBot is already installed. The script is attempting to create a backup."
   echo "USE 'Ctrl + C' to cancel it."
-  sudo systemctl stop SoftBot
+  sudo systemctl stop softbot
   sleep 2
   sudo mkdir /bot/backup
   sleep 2
@@ -14,7 +14,7 @@ if [ -d "/bot/SoftBot" ]; then
   sleep 2
   sudo cp -f /bot/softether/setup.py /bot/backup/setup.py.bak
   sleep 2
-  sudo systemctl disable SoftBot
+  sudo systemctl disable softbot
 fi
 
 # Start from here
@@ -63,12 +63,12 @@ sudo systemctl stop softbot.service
 # Restore backup
 if [ -d "/opt/backup" ]; then
   echo "Restoring backup."
-  sudo systemctl stop SoftBot.service
+  sudo systemctl stop softbot.service
   sleep 2
   sudo cp -f /bot/backup/msg.py.bak /bot/softether/msg.py 
   sleep 2
   sudo cp -f /bot/backup/setup.py.bak /bot/softether/setup.py 
-  sudo systemctl restart SoftBot.service
+  sudo systemctl restart softbot.service
 fi
 
 
@@ -76,5 +76,5 @@ fi
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 clear
 echo "Have FUN ;)."
-
-  
+echo "Type sudo nano /bot/SoftBot/setup.py for Config the bot"
+echo "and after the Type sudo systemctl restart softbot.service for run the bot"
