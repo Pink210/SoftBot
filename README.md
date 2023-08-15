@@ -40,16 +40,17 @@ To install and run this project, you need to have Python 3.9 or higher installed
 You can install them using pip:
 
 ```bash
-pip install discord.py pandas json time discord.ext
+pip install discord.py
+pip install pandas
+pip install json
+pip install time
+pip install discord.ext
 ```
-
-
 After that, you need to clone this repo(download this bot to your Linux server)
 
 ```bash
 git clone https://github.com/Pink210/SoftBot.git
 ```
-
 
 Now is better to move it to the better location
 
@@ -92,12 +93,12 @@ sudo systemctl enable SoftBot.service
 ```bash
 sudo systemctl start SoftBot.service
 ```
-If you don't want to have service You can run the bot with this code in bot directory:
+If you don't want to have service You can run the bot with this code in the bot directory:
 
 ```bash
 python main.py
 ```
-THE END ;) NOW You need to edit setup file for config the bot
+THE END ;) NOW You need to edit the setup file for config the bot
 </details>
 
 ## Configration
@@ -105,7 +106,7 @@ THE END ;) NOW You need to edit setup file for config the bot
 <details>
   <summary>for Setup and Configration</summary>
 
-You need a Discord account and create a bot token for your project. You can follow the instructions from [soon](^1^) to create a bot token.
+You need a Discord account and create a bot token for your project. You can follow the instructions from [here](https://discord.com/developers/docs/getting-started) to create a bot token.
 
 You need to edit the setup.py file and enter the following information:
 
@@ -156,7 +157,6 @@ User list of hubnumber1:
 Name: user1 Expiry: 2023/12/31 Traffic: 1 GB
 Name: user2 Expiry: No expiry Traffic: 2 GB
 ```
-
 
 The bot will also send status updates every 8 hours (or as specified in the setup.py file) in the channel.
 
