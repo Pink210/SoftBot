@@ -53,10 +53,10 @@ sleep 2
 sudo systemctl daemon-reload
 sleep 2
 # Enable the service to start on boot
-sudo systemctl enable SoftBot.service || exit
+sudo systemctl enable softbot.service || exit
 sleep 3
 # Start the service
-sudo systemctl start SoftBot.service || exit
+sudo systemctl start softbot.service || exit
 sleep 2
 
 # Restore backup
