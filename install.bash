@@ -23,7 +23,15 @@ sudo apt-get update -y && sudo apt-get -o Dpkg::Options::="--force-confold" -y u
 sleep 2
 
 # install necessary pip
-pip install discord.py pandas json time discord.ext
+apt install python3-pip -y
+sleep 2
+pip install discord.py -y
+pip install discord -y
+pip install pandas -y
+pip install json -y
+pip install time -y
+pip install discord.ext -y
+
 
 # Download SoftBot
 git clone https://github.com/Pink210/SoftBot.git || exit
@@ -41,8 +49,8 @@ Description=SoftBot
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /bot/softbot/main.py
-WorkingDirectory=/bot/softbot/
+ExecStart=/usr/bin/python3 /bot/SoftBot/main.py
+WorkingDirectory=/bot/SoftBot/
 Restart=always
 
 [Install]
@@ -71,10 +79,9 @@ if [ -d "/opt/backup" ]; then
   sudo systemctl restart softbot.service
 fi
 
-
 #add needrestart back again
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 clear
-echo "Have FUN ;)."
-echo "Type 'sudo nano /bot/SoftBot/setup.py' for Config the bot"
-echo "and after the Type 'sudo systemctl restart softbot.service' for run the bot"
+echo 'Have FUN ;).'
+echo 'First "sudo nano /bot/SoftBot/setup.py" for Config the bot'
+echo 'second "sudo systemctl restart softbot.service" to run the bot'
