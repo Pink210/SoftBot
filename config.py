@@ -119,7 +119,7 @@ def client(hubname):
             for row in response:
                 row[0] = f"{msg.before_name} {row[0]}{msg.after_name}"
                 row[1] = f"{msg.before_expiry} { msg.no_expiry_message if row[1][:10] == '1970-01-01' else row[1][:10]}{msg.after_expiry}"
-                row[2] = f"{msg.before_traffic}{(int(row[2])+int(row[3])+int(row[4])+int(row[5])) // (1048576):,} {msg.after_traffic}"
+                row[2] = f"{msg.before_traffic}{(int(row[2])+int(row[3])+int(row[4])+int(row[5])) // (1073741824):,} {msg.after_traffic}"
                 row[3] = ""
                 row[4] = ""
                 row[5] = ""
@@ -168,7 +168,7 @@ def all_client():
         formatted_response = []
         
         for key in result:
-            formatted_response.append(f"{msg.before_name}{result[key][0]}{msg.after_name} {msg.before_expiry}{msg.no_expiry_message if result[key][1][:10] == '1970-01-01' else result[key][1][:10]} {msg.after_expiry}{msg.before_traffic}{(int(result[key][2])+int(result[key][3])+int(result[key][4])+int(result[key][5])) // (1048576):,}{msg.after_traffic}")
+            formatted_response.append(f"{msg.before_name}{result[key][0]}{msg.after_name} {msg.before_expiry}{msg.no_expiry_message if result[key][1][:10] == '1970-01-01' else result[key][1][:10]} {msg.after_expiry}{msg.before_traffic}{(int(result[key][2])+int(result[key][3])+int(result[key][4])+int(result[key][5])) // (1073741824):,}{msg.after_traffic}")
             
         return "User list of all servers:" "\n" + '\n'.join(formatted_response)
     
