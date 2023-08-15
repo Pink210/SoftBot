@@ -1,22 +1,30 @@
+#If you using a Linux nano editor follow this instruction 
+'''
+For Paste = Click right or Ctrl+U
+for Cut\Delete = Ctrl+K
+for saving = Ctrl+X => Y => Enter
+if you using Windows you can edit this file and then select all code here Ctrl+K and past it here for easy solution. 
+'''
+
 # Discord token
 token = ''
 
 # Server and password of your server
-server_pass = ["Server.com", "password"]
+server_pass = ["domain/IP", "pass"]
 
 # List of hubs and cascade and Country and server info and client info
 '''
-[Hub_Name] = The name of the hub
-[Cascade_Name] = The name of the cascade
-[hubname] = The name of VH for the bot.
-[Server_Status] = The input to see the list of statuses off that server. like user types: "VHub1" and the bot responded VHub1 is Online/Offline" [don't leave it empty and don't use the same]
-[input_for_clients_of_Server] = The input to see the list of clients on that server [don't leave it empty and don't use the same]
+[1] = The name of the hub
+[2] = The name of the cascade
+[3] = The name of VH for the bot.
+[4] = The input to see the list of statuses of that server. like user types: "VHub1" and the bot responded VHub1 is Online/Offline" [don't leave it empty and don't use the same]
+[5] = The input to see the list of clients on that server [don't leave it empty and don't use the same]
 '''
-hub = [["Hub_Name","Cascade_Name","hubname","Server_Status","*input_for_clients_of_Server"],
-       ["Hub_Name2","Cascade_Name1","hubname","Server_Status1","*input_for_clients_of_Server"],
-       ["Hub_Name3","Cascade_Name2","hubname","Server_Status2","*input_for_clients_of_Server"],
-       ["Hub_Name4","Cascade_Name3","hubname","Server_Status3","*input_for_clients_of_Server"],
-       ["Hub_Name5","Cascade_Name4","hubname","Server_Status4","*input_for_clients_of_Server"]]
+hub = [["1", "2", "3", "4", "*5"],
+       ["1", "2", "3", "4", "*5"],
+       ["1", "2", "3", "4", "*5"],
+       ["1", "2", "3", "4", "*5"],
+       ["1", "2", "3", "4", "*5"]]
 
 # Discord channel you want the bot to respond to 
 channel_name = "test"
