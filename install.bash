@@ -76,5 +76,5 @@ fi
 sudo sed -i "s/#\$nrconf{restart} = 'a';/\$nrconf{restart} = 'i';/" /etc/needrestart/needrestart.conf
 clear
 echo "Have FUN ;)."
-echo "Type sudo nano /bot/SoftBot/setup.py for Config the bot"
-echo "and after the Type sudo systemctl restart softbot.service for run the bot"
+echo "Type 'sudo nano /bot/SoftBot/setup.py' for Config the bot"
+echo "and after the Type 'sudo systemctl restart softbot.service' for run the bot"
