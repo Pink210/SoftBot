@@ -5,26 +5,106 @@ This is a Discord bot project that uses the SoftEther VPN server API to monitor 
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contribution](#contribution)
-- [License](#license)
+- [Configration](#configration)
+- [What is this?](#infomation)
+- [Translate](#translate)
 - [Acknowledgements](#acknowledgements)
 
 ## Installation
 
-To install and run this project, you need to have Python 3.9 or higher installed on your system. You also need to install the following Python packages:
+Automatically
 
+<details>
+  <summary>for Install & Update automatically</summary>
+
+To install automatically the bot, simply copy and paste it on your Linux server in terminal
+  
+```bash
+wget -O se-install https://raw.githubusercontent.com/Pink210/SoftBot/main/install.bash  && chmod +x se-install && ./se-install
+```
+</details>
+
+Manually
+
+<details>
+  <summary>for Install manually</summary>
+  
+To install and run this project, you need to have Python 3.9 or higher installed on your system. You also need to install the following Python packages:
 - discord.py
-- requests
+- discord.ext
+- json
+- time
 - pandas
 
 You can install them using pip:
 
 ```bash
-pip install discord.py requests pandas
+pip install discord.py pandas json time discord.ext
 ```
 
-You also need to have a Discord account and create a bot token for your project. You can follow the instructions from [soon](^1^) to create a bot token.
+
+After that, you need to clone this repo(download this bot to your Linux server)
+
+```bash
+git clone https://github.com/Pink210/SoftBot.git
+```
+
+
+Now is better to move it to the better location
+
+```bash
+cd ..
+sudo mkdir /bot/
+```
+```bash
+sudo cp -rf /root/SoftBot/ /bot/
+```
+
+Now is the time to make a service for it to make bot startup(you can skip this part and run the app every time)
+
+```bash
+sudo nano /etc/systemd/system/softbot.service
+```
+And pass this code to the file 
+
+```bash
+[Unit]
+Description=SoftBot
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /bot/softbot/main.py
+WorkingDirectory=/bot/softbot/
+Restart=always
+
+[Install]
+WantedBy=sysinit.target
+```
+now running the servise 
+
+```bash
+sudo systemctl daemon-reload
+```
+```bash
+sudo systemctl enable SoftBot.service
+```
+```bash
+sudo systemctl start SoftBot.service
+```
+If you don't want to have service You can run the bot with this code in bot directory:
+
+```bash
+python main.py
+```
+THE END ;) NOW You need to edit setup file for config the bot
+</details>
+
+## Configration
+
+<details>
+  <summary>for Setup and Configration</summary>
+
+You need a Discord account and create a bot token for your project. You can follow the instructions from [soon](^1^) to create a bot token.
 
 You need to edit the setup.py file and enter the following information:
 
@@ -36,18 +116,17 @@ You need to edit the setup.py file and enter the following information:
 - The hour that the bot sends status updates
 - The cooldown time for responses
 
-## Usage
-
-To run the bot, you need to execute the main.py file:
-
 ```bash
-python main.py
+sudo nano /bot/SoftBot/setup.py
 ```
 
+</details>
+
+## Infomation
 The bot will connect to your Discord server and start listening for messages in the specified channel. You can use the following commands to interact with the bot:
 
-- Type the name of a server (e.g. `ams`) to get the status of that server (online or offline).
-- Type the name of a client (e.g. `*ams`) to get information about clients on that server (name, expiry date, traffic).
+- Type the name of a server (e.g. `hubnumber1`) to get the status of that server (online or offline).
+- Type the name of a client (e.g. `*hubnumber1`) to get information about clients on that server (name, expiry date, traffic).
 - Type `servers` to get the status of all servers.
 - Type `client` to get information about clients on all servers.
 
@@ -61,39 +140,39 @@ Name: user2 Expiry: No expiry Traffic: 2 GB
 or
 ```text
 Server is Online
-['Turkey', 'Amsterdam', 'Germany2', 'Emarat']
+['hubnumber1', 'hubnumber2', 'hubnumber5', 'hubnumber6']
 or
 Server is Offline
-['English', 'Germany']
+['hubnumber3', 'hubnumber4']
 ```
 or
 ```text
-Amsterdam is online
+hubnumber1 is online
 ```
 or
 ```text
-User list of Amsterdam:
+User list of hubnumber1:
 Name: user1 Expiry: 2023/12/31 Traffic: 1 GB
 Name: user2 Expiry: No expiry Traffic: 2 GB
 ```
 
 
-
 The bot will also send status updates every 8 hours (or as specified in the setup.py file) in the channel.
 
-## Contribution
 
-If you want to contribute to this project, you are welcome to do so. Please follow these steps:
+## Translate
 
-- Fork this repository on GitHub.
-- Clone your forked repository on your local machine.
-- Create a new branch for your feature or bug fix.
-- Make your changes and commit them with a clear message.
-- Push your branch to your forked repository.
-- Create a pull request from your branch to the main branch of this repository.
-- Wait for feedback or approval.
+<details>
+  <summary>Click here for details</summary>
 
-Please follow the code style and format of this project. Also, please respect the code of conduct and be polite and constructive in your communication.
+```bash
+sudo nano /bot/SoftBot/msg.py
+```
+You may translate the message into any language or format you like. 
+
+</details>
+
+
 
 ## Acknowledgements
 
