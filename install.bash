@@ -25,12 +25,12 @@ sleep 2
 # install necessary pip
 apt install python3-pip -y
 sleep 2
-pip install discord.py -y
-pip install discord -y
-pip install pandas -y
-pip install json -y
-pip install time -y
-pip install discord.ext -y
+pip install discord.py
+pip install discord 
+pip install pandas
+pip install json
+pip install time
+pip install discord.ext
 
 
 # Download SoftBot
