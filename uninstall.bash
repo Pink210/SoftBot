@@ -20,9 +20,10 @@ then
   sudo systemctl disable softbot
   sudo rm /etc/systemd/system/softbot.service
   sudo systemctl daemon-reload
-  echo -e "${red}'Uninstall Complete. Im sorry. Next time i try to be better bot ' ${plain}"
+  clear
+  echo -e "${red}'Uninstall Complete. I'm sorry. Next time I try to be better bot ' ${plain}"
 else 
-"${red}SoftBot in not installed on this server.${plain}"
+"${red}SoftBot is not installed on this server.${plain}"
 fi
 
 clear
