@@ -1,117 +1,176 @@
-# Import the time module to keep track of time.
-import time
+# Import the Json and pandas for interact with Softether API.
+import json
+import pandas as pd
 
-# Import the Discord module and the task's extension to interact with the Discord API.
-import discord
-from discord.ext import tasks
-
-# Import the config, responses, and set-up modules from local files.
-import config
-import responses
+# Import the requests, setup, and message modules from local files.
+import requests
 import setup
 import msg
 
 
-# Import variables from the config module for convenience
-all_client = config.all_client()
-all_server = config.all_server()
-TIMER = int(setup.timer)
-COOLDOWN = int(setup.cooldown)
+# Set up server, API site, and password
+server = setup.server_pass[0]
+apisite = f"https://{server}:5555/api/"
+password = setup.server_pass[1]
 
-# Set the cooldown time in seconds (120 seconds = 2 minutes).
-COOLDOWN_TIME = COOLDOWN
-# Initialize a variable to keep track of the last time the bot sent a message.
-last_message_time = 0
+# Leave username empty as SoftEther does not have a username
+username = ""
 
-async def send_message(message, user_message, is_private):
+def SendCommand(gateway, password, method, params):
     """
-    Sends a response to the user's message.
-
-    :param message: The message object from the Discord API.
-    :param user_message: The content of the user's message.
-    :param is_private: A boolean indicating whether the response should be sent as a private message or not.
-    :return: None
+    Send a command to the SoftEther VPN server.
+    :param gateway: The URL of the SoftEther VPN server.
+    :param password: The password for the SoftEther VPN server.
+    :param method: The method to be called on the SoftEther VPN server.
+    :param params: The parameters for the method being called.
+    :return: The result of the command or False if an error occurred.
     """
-    global last_message_time
-    # Get the current time in seconds since the epoch.
-    current_time = time.time()
-    # Check if enough time has passed since the last message was sent.
-    if current_time - last_message_time >= COOLDOWN_TIME:
-        try:
-            # Get a response to the user's message using the responses module.
-            response = responses.get_response(user_message)
-            # Send the response as a private message or in the channel, depending on the value of is_private.
-            if is_private:
-                await message.author.send(response)
-            else:
-                await message.channel.send(response)
-            # Update the last message time to the current time.
-            last_message_time = current_time
-        except Exception as e:
-            print(e)
-    else:
-        return f"```{msg.cooldown_message}```"
+    try:
+        # Set up the payload for the request
+        payload = {
+            "jsonrpc": "2.0",
+            "id": "rpc_call_id",
+            "method": method,
+            "params": params
+        }
+        headers = {'content-type': 'application/json'}
+        
+        # Send the request to the SoftEther VPN server
+        response = requests.request("POST", url=gateway, headers=headers, data=json.dumps(payload), 
+                                    verify=True, auth=(username, password))
+        data = response.json()
+        return data['result']
+    except:
+        return False
 
-
-
-def run_discord_bot():
+def ser(hubnum):
     """
-    This function sets up and runs the Discord bot by creating a new Discord client object,
-    setting up event handlers, and starting the bot using the specified token.
+    Get the status of a single server.
+    :param hubnum: The index of the hub in the setup.hub list.
+    :return: A string indicating whether the server is online or offline.
     """
-    # Get the bot token from the setup module.
-    TOKEN = setup.token
-    # Set up the intents for the bot.
-    intents = discord.Intents.default()
-    intents.message_content = True
-    # Create a new Discord client object with the specified intents.
-    client = discord.Client(intents=intents)
-
-
-    @client.event
-    async def on_ready():
-        """
-        This function is called when the bot is ready and connected to Discord.
-        """
-        print(f"Bot is now running")
-        send_hello_world.start()
-
-    @tasks.loop(hours=TIMER)
-    async def send_hello_world():
-        channel = discord.utils.get([c for c in client.get_all_channels() if isinstance(c, discord.TextChannel)], name=setup.channel_name)
-        if channel:
-            await channel.send(f'```{all_client}```')
-            await channel.send(f'```{all_server}```')
-
-    send_hello_world.before_loop(client.wait_until_ready)
-    
-    @client.event
-    async def on_message(message):
-        """
-        This function is called when a new message is received by the bot.
-        :param message: The message object from the Discord API.
-        """
-        # Ignore messages sent by the bot itself.
-        if message.author == client.user:
-            return
-
-        # Extract information from the message object.
-        username = str(message.author)
-        user_message = str(message.content)
-        channel = str(message.channel)
-
-        #For debug porpess
-        #print(f'{username} said:"{user_message}" ({channel})')
-
-        # Check if the message was sent in the specified channel or not.
-        if channel == setup.channel_name:
-            response = await send_message(message, user_message, is_private=False)
-            if response:
-                await message.channel.send(response)
+    try:
+        method = "GetLinkStatus"
+        params = {
+            "HubName_Ex_str": setup.hub[hubnum][0],
+            "AccountName_utf": setup.hub[hubnum][1],
+        }
+        response = SendCommand(apisite, password, method, params)
+        if isinstance(response, dict):
+            response = pd.json_normalize(response)['SessionStatus_u32'].values[0]
+        if response == 3:
+            return f"{setup.hub[hubnum][2]} {msg.server_online}"
         else:
-            response = await send_message(message, user_message, is_private=True)
-            if response:
-                await message.author.send(response)
+            return f"{setup.hub[hubnum][2]} {msg.server_offline}"
+    except:
+        return "error"
 
-    # Run the bot using the specified token.
-    client.run(TOKEN)
+def all_server():
+    """
+    Get the status of all servers.
+    :return: A string indicating which servers are online and which are offline.
+    """
+    online_servers = []
+    offline_servers = []
+    
+    try:
+        for s in setup.hub:
+            method = "GetLinkStatus"
+            params = {
+                "HubName_Ex_str": s[0],
+                "AccountName_utf": s[1],
+            }
+            response = SendCommand(apisite, password, method, params)
+            if isinstance(response, dict):
+                response = pd.json_normalize(response)['SessionStatus_u32'].values[0]
+            if response == 3:
+                online_servers.append(s[2])
+            else:
+                offline_servers.append(s[2])
+                
+        if not online_servers:
+            online_servers.append(msg.no_online_servers)
+        if not offline_servers:
+            offline_servers.append(msg.no_offline_servers)
+            
+        return f"{msg.server_online}\n{online_servers}\n\n{msg.server_offline}\n{offline_servers}"
+    
+    except:
+        return "error"
+
+def client(hubname):
+    """
+    Get information about clients on a single server.
+    :param hubname: The index of the hub in the setup.hub list.
+    :return: A string containing information about clients on the specified server.
+    """
+    
+    try:
+        method = "EnumUser"
+        params = {
+            "HubName_str": setup.hub[hubname][0],
+        }
+        
+        response = SendCommand(apisite, password, method, params)
+        
+        if isinstance(response, dict) and 'UserList' in response:
+            response = pd.json_normalize(response['UserList'])[['Name_str', 'Expires_dt', 'Ex.Recv.BroadcastBytes_u64', 'Ex.Send.BroadcastBytes_u64','Ex.Recv.UnicastBytes_u64' ,'Ex.Send.UnicastBytes_u64']].values
+            
+            for row in response:
+                row[0] = f"{msg.before_name} {row[0]}{msg.after_name}"
+                row[1] = f"{msg.before_expiry} { msg.no_expiry_message if row[1][:10] == '1970-01-01' else row[1][:10]}{msg.after_expiry}"
+                row[2] = f"{msg.before_traffic}{(int(row[2])+int(row[3])+int(row[4])+int(row[5])) // (1048576):,} {msg.after_traffic}"
+                row[3] = ""
+                row[4] = ""
+                row[5] = ""
+                
+            formatted_response = '\n'.join([''.join(row) for row in response])
+            
+            return f"{msg.before_server_name} {setup.hub[hubname][2]}{msg.after_server_name}\n{formatted_response}"
+        
+    except:
+        return "error"
+
+def all_client():
+    """
+    Get information about clients on all servers.
+    :return: A string containing information about clients on all servers.
+    """
+    
+    client_name = []
+    result = {}
+    
+    try:
+        for s in setup.hub:
+            method = "EnumUser"
+            params = {
+                "HubName_str": s[0],
+            }
+            
+            response = SendCommand(apisite, password, method, params)
+            
+            if isinstance(response, dict) and 'UserList' in response:
+                response = pd.json_normalize(response['UserList'])[['Name_str', 'Expires_dt', 'Ex.Recv.BroadcastBytes_u64', 'Ex.Send.BroadcastBytes_u64','Ex.Recv.UnicastBytes_u64' ,'Ex.Send.UnicastBytes_u64']].values
+                
+                for user in response:
+                    client_name.append(user)
+                    
+        for c in client_name:
+            name, date, value, value2, value3, value4 = c
+            if name in result:
+                result[name][2] += value
+                result[name][3] += value2
+                result[name][4] += value3
+                result[name][5] += value4 
+            else:
+                result[name] = [name, date, value, value2, value3, value4]
+                
+        formatted_response = []
+        
+        for key in result:
+            formatted_response.append(f"{msg.before_name}{result[key][0]}{msg.after_name} {msg.before_expiry}{msg.no_expiry_message if result[key][1][:10] == '1970-01-01' else result[key][1][:10]} {msg.after_expiry}{msg.before_traffic}{(int(result[key][2])+int(result[key][3])+int(result[key][4])+int(result[key][5])) // (1048576):,}{msg.after_traffic}")
+            
+        return "User list of all servers:" "\n" + '\n'.join(formatted_response)
+    
+    except:
+        return "error"
