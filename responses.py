@@ -29,5 +29,3 @@ def get_response(message):
     
     # Return None if no conditions are met
     return
-
-
