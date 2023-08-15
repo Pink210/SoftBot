@@ -4,7 +4,8 @@ green=‘\033[0;32m’ yellow=‘\033[0;33m’ red=‘\033[0;31m’ plain=‘\03
 
 clear
 
-read -rep $'!!! IMPORTANT !!!\n\ngreendo you want continue? [[y/N]]{plain}' response
+echo -e “greenHello,thisisacolortestscript.{plain}”
+read -rep $'!!! IMPORTANT !!!\n\ndo you want continue? [[y/N]]{plain}' response
 case "$response" in
 [yY][eE][sS]|[yY])
 
