@@ -58,6 +58,7 @@ sleep 3
 # Start the service
 sudo systemctl start softbot.service || exit
 sleep 2
+sudo systemctl stop softbot.service
 
 # Restore backup
 if [ -d "/opt/backup" ]; then
