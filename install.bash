@@ -4,11 +4,9 @@ red='\033[0;31m'
 green='\033[0;32m'
 yellow='\033[0;33m'
 plain='\033[0m'
-
 clear
 
-echo -e "${yellow}'hello' ${plain}"
-
+echo -e "${yellow}'Hello From the other Side' ${plain}"
 
 # Check for the Update and make a backup
 if [ -d "/bot/SoftBot" ]; then
