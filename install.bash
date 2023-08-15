@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 (( EUID != 0 )) && exec sudo -- "$0" "$@"
-green=‘\033[0;32m’ yellow=‘\033[0;33m’ red=‘\033[0;31m’ plain=‘\033[0m’
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+plain='\033[0m'
 
 clear
 
-echo -e “greenHello,thisisacolortestscript.{plain}”
+echo -e "${yellow}'hello' ${plain}"
 read -rep $'!!! IMPORTANT !!!\n\ndo you want continue? [[y/N]]{plain}' response
 case "$response" in
 [yY][eE][sS]|[yY])
