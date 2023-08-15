@@ -46,6 +46,7 @@ pip install json
 pip install time
 pip install discord.ext
 ```
+
 After that, you need to clone this repo(download this bot to your Linux server)
 
 ```bash
@@ -67,6 +68,7 @@ Now is the time to make a service for it to make bot startup(you can skip this p
 ```bash
 sudo nano /etc/systemd/system/softbot.service
 ```
+
 And pass this code to the file 
 
 ```bash
@@ -82,7 +84,7 @@ Restart=always
 [Install]
 WantedBy=sysinit.target
 ```
-now running the servise 
+now running the service 
 
 ```bash
 sudo systemctl daemon-reload
@@ -120,6 +122,11 @@ You need to edit the setup.py file and enter the following information:
 
 ```bash
 sudo nano /bot/SoftBot/setup.py
+```
+after that
+
+```bash
+sudo systemctl start SoftBot.service
 ```
 
 </details>
