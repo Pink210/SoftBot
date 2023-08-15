@@ -126,7 +126,7 @@ sudo nano /bot/SoftBot/setup.py
 after that
 
 ```bash
-sudo systemctl start SoftBot.service
+sudo systemctl restart SoftBot.service
 ```
 
 </details>
